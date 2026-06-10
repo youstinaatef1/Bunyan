@@ -4,18 +4,22 @@ require("dotenv").config();
 // Express
 const express = require("express");
 const app = express();
+const morgan = require("morgan");
 // Middleware Json
 app.use(express.json());
 // Simple Logger
 if(process.env.NODE_ENV === "dev"){
-    app.use((req,res, next) =>{
-        console.log(`${req.method} ${req.originalUrl}`);
-    next();
-    });
+     app.use(morgan("combined"));
+    // app.use((req,res, next) =>{
+    //     console.log(`${req.method} ${req.originalUrl}`);
+    // next();
+    // });
 }
 app.get("/test", (req, res) =>{
     res.json({msg: "Test Route"});
 });
+const connectedDB = require("./config/db");
+connectedDB();
 // Port
 const port = process.env.PORT || 3000;
 // DB Connection
